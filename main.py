@@ -28,7 +28,7 @@ def check_bday(obj):
 
 if __name__ == "__main__":
     email = os.environ.get('MY_EMAIL')
-    rev = os.environ.get('VED_EMAIL')
+    rev_emails = os.environ.get('VED_EMAIL').split(',')
     token = os.environ.get('TOKEN')
     subject = "Wish Reminder"
     try:
@@ -43,8 +43,9 @@ if __name__ == "__main__":
                 for person in data:
                     wish = check_bday(person)
                     if (wish != None):
-                        server.sendmail(email, rev, wish)
-                        print(f"Sent Email : {wish}")
+                        for rev_email in rev_emails:
+                            server.sendmail(email, rev_email.strip(), wish)
+                            print(f"Sent Email : {wish} to {rev_email.strip()}")
             except Exception as e:
                 print(f"Error Importing JSON File: {e}")
     except Exception as e:
